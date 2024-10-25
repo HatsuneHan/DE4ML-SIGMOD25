@@ -243,7 +243,6 @@ class DE4ML:
 
         AT = top_half_loss_df['index'].tolist()
 
-        
         # step 2: get D_dt, corrupted tuples 
         D_cot = list({row for row, col in S_cov})
         # print("length of D_cot: ", len(D_cot))
@@ -345,7 +344,9 @@ class DE4ML:
 
         #### evaluate refined scope of repair
         accuracy_update = evaluate(X_train_update, y_train_update, X_test, y_test, self.label_column, self.model_name, self.gpu_num, 'repair', 'iteration_' + str(iteration), self.root_dir, self.dataset_name)
-        result_dict['repair_' + str(iteration+1)] = accuracy_update
+        # result_dict['repair_' + str(iteration+1)] = accuracy_update
+        if iteration == num_feat - 1:
+          result_dict['deaat'] = accuracy_update
 
         importance_vector = importance_vector[:-1]
 
@@ -353,7 +354,7 @@ class DE4ML:
         with open(os.path.join(self.root_dir, self.dataset_name, 'repair', 'tmp_data', 'result_dict.json'), 'w') as f:
           json.dump(result_dict, f)
 
-        print(result_dict)
+      print(result_dict)
               
     if self.mode == "enhance" or self.mode == "all":
       
@@ -460,25 +461,7 @@ class DE4ML:
       unenhanced_y_pred_adv = initial_predictor.predict(X_test_adv)
       unenhanced_rob = accuracy_score(y_test_adv, unenhanced_y_pred_adv)
 
-      enhance_result_dict['unenhanced'] = "acc: " + str(unenhanced_acc) + ", rob: " + str(unenhanced_rob)
-
-      # full adv performance
-      data_initial_with_full_adv = pd.concat([data_initial, full_S_at], axis=0).reset_index(drop=True)
-
-      full_adv_predictor = TabularPredictor(label = self.label_column, verbosity = False)
-      full_adv_predictor = train_predictor(self.model_name, full_adv_predictor, data_initial_with_full_adv, self.gpu_num)
-
-      full_adv_y_pred_clean = full_adv_predictor.predict(X_test)
-      full_adv_acc = accuracy_score(y_test, full_adv_y_pred_clean)
-      full_adv_y_pred_adv = full_adv_predictor.predict(X_test_adv)
-      full_adv_rob = accuracy_score(y_test_adv, full_adv_y_pred_adv)
-
-      enhance_result_dict['full_adv'] = "acc: " + str(full_adv_acc) + ", rob: " + str(full_adv_rob)
-
-      with open(os.path.join(self.root_dir, self.dataset_name, 'enhance', 'tmp_data', 'result_dict.json'), 'w') as f:
-        json.dump(enhance_result_dict, f)
-
-      data_initial_with_full_adv.to_csv(os.path.join(self.root_dir, self.dataset_name, 'enhance', 'tmp_data', self.dataset_name + '_with_full_adv.csv'), index=False)
+      enhance_result_dict['unenhanced'] = "rob: " + str(unenhanced_rob)
       
       # DEP algorithm
       acc_curr = acc_pre = rob_curr = rob_pre = rob_pre_2 = 0
@@ -523,9 +506,6 @@ class DE4ML:
         acc_curr, rob_curr, S_mt_indices = dep_evaluate(PVD, data_val_dep, S_at, finetuned_predictor, self.label_column)
         S_at_remained_indices = list(set(S_at.index) - set(S_mt_indices))
         
-        print(acc_curr, rob_curr, S_mt_indices)
-        enhance_result_dict['intermediate_' + str(dep_iteration)] = "in_acc: " + str(acc_curr) + ", in_rob: " + str(rob_curr)
-
         with open(os.path.join(self.root_dir, self.dataset_name, 'enhance', 'tmp_data', 'result_dict.json'), 'w') as f:
           json.dump(enhance_result_dict, f)
 
@@ -570,7 +550,6 @@ class DE4ML:
         weight = (model_enhance_data['weight'].numpy()).T
         weight_S_at = weight[len(data_train_dep):]
 
-        print("Start K-Means")
         # K-Means
         
         if int(len(S_mt_indices) * 0.2) == 0:
@@ -662,8 +641,6 @@ class DE4ML:
         enhanced_acc = accuracy_score(y_test, enhanced_y_pred_clean)
         enhanced_y_pred_adv = enhanced_predictor.predict(X_test_adv)
         enhanced_rob = accuracy_score(y_test_adv, enhanced_y_pred_adv)
-
-        enhance_result_dict['enhanced_after_' + str(dep_iteration)] = "acc: " + str(enhanced_acc) + ", rob: " + str(enhanced_rob)
         
         with open(os.path.join(self.root_dir, self.dataset_name, 'enhance', 'tmp_data', 'result_dict.json'), 'w') as f:
           json.dump(enhance_result_dict, f)
@@ -681,13 +658,15 @@ class DE4ML:
       enhanced_y_pred_adv = enhanced_predictor.predict(X_test_adv)
       enhanced_rob = accuracy_score(y_test_adv, enhanced_y_pred_adv)
 
-      enhance_result_dict['final_enhanced'] = "acc: " + str(enhanced_acc) + ", rob: " + str(enhanced_rob)
+      enhance_result_dict['deaap'] = "rob: " + str(enhanced_rob)
       
       with open(os.path.join(self.root_dir, self.dataset_name, 'enhance', 'tmp_data', 'result_dict.json'), 'w') as f:
         json.dump(enhance_result_dict, f)
 
       data_dep.to_csv(os.path.join(self.root_dir, self.dataset_name, 'enhance', 'tmp_data', self.dataset_name + '_final_enhanced.csv'), index=False)
       
+      print(enhance_result_dict)
+
     return
 
 

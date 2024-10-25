@@ -10,11 +10,18 @@ def initParser():
   parser = argparse.ArgumentParser(description='Clean the dataset')
   parser.add_argument('-r', '--root_dir', type=str, help='The root directory', required=True)
   parser.add_argument('-d', '--dataset', type=str, help='The dataset name', required=True)
-  parser.add_argument('-c', '--cr_method', type=str,  help='CR method', required=True)
-  parser.add_argument('-m', '--model_name', type=str,  help='Model Name', required=True)
+  parser.add_argument('-c', '--cr_method', type=str,  help='CR method', default="rahabaran")
+  parser.add_argument('-m', '--model_name', type=str,  help='Model Name', default="LogisticRegression")
   parser.add_argument('-ab_e', '--abnormal_epoch', type=int,  help='Training epochs to identify abnormal tuples', default=5)
   parser.add_argument('-dnum', '--datamodels_num', type=int,  help='Number of models used in regression in datamodels', default=100)
+
+  # mode repair: only run phase 1
+  # mode enhance: only run phase 2 with ground truth
+  # mode all: run phase 2 with the cleaning result of phase 1
   parser.add_argument('-mode', '--mode', type=str,  help='Algorithm Mode', required=True)
+
+  # if there exist some trained datamodels/models, our algorithm will directly use them
+  # so if you want to run the algorithm from scratch, you should set init_repair (phase 1) and init_enhance (phase 2) to True
   parser.add_argument('-init_repair', '--init_repair', type=bool,  help='whether init or use existing data in repair', default=False)
   parser.add_argument('-init_enhance', '--init_enhance', type=bool,  help='whether init or use existing data in enhance', default=False)
   parser.add_argument('-sr', '--sample_ratio', type=float,  help='sample ratio of datamodels', default=0.5)
