@@ -19,16 +19,16 @@ In the main directory `Artiacts`, you can see the file tree organization as foll
 │   │   ├── german.csv
 │   │   ├── feature_importance.csv
 │   │   ├── test
-│	  │   │	  ├── german_bim.csv
-│	  │   │	  ├── german_carlini.csv
-│	  │   │	  ├── german_clean.csv
-│	  │   │	  ├── german_deepfool.csv
-│	  │   │	  └── german_fgsm.csv
+│	│   │	├── german_bim.csv
+│	│   │	├── german_carlini.csv
+│	│   │	├── german_clean.csv
+│	│   │	├── german_deepfool.csv
+│	│   │	└── german_fgsm.csv
 │   │   └── train
-│	  │   	  ├── german_clean.csv
-│	  │   	  ├── german_dirty.csv
-│	  │   	  ├── german_rahabaran.csv
-│	  │   	  └── german_rock.csv
+│	│   	├── german_clean.csv
+│	│   	├── german_dirty.csv
+│	│   	├── german_rahabaran.csv
+│	│   	└── german_rock.csv
 │   ├── Bank_balanced
 │   │   └── ...
 │   ├── adult_balanced
@@ -46,7 +46,7 @@ In the main directory `Artiacts`, you can see the file tree organization as foll
     ├── datamodels
     │   └── ...
     ├── utils
-    │		└── ...
+    │   └── ...
     ├── fast_l1
     │   └── ...
     ├── load_checkpoints.sh
