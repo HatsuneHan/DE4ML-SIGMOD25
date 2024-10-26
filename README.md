@@ -177,7 +177,7 @@ You can change `rahabaran` to `rock`.
 
 ### 2.3 Reproduce our method from checkpoints
 
-The checkpoints mainly include datamodels' parameters and trained models. We provide checkpoints to reproduce the experiments reported in our submitted paper. Due to storage constraints, we include only the checkpoints for Fig. 5(a) and Fig. 5(f), which demonstrate the performance of DEAAT and DEAAP across different datasets. These checkpoints are available via an external link in [Dropbox]().
+The checkpoints mainly include datamodels' parameters and trained models. We provide checkpoints to reproduce the experiments reported in our submitted paper. Due to storage constraints, we include only the checkpoints for Fig. 5(a) and Fig. 5(f), which demonstrate the performance of DEAAT and DEAAP across different datasets. These checkpoints are available via external links in [Repair_GoogleDrive](https://drive.google.com/file/d/138jMqEAqBTXimRz6TmevuFWoSQ2RXpyq/view?usp=sharing) and [Enhance_GoogleDrive](https://drive.google.com/file/d/1XRGnGBfx7ktxnjBAiU8609YzQ1g0b8cA/view?usp=sharing).
 
 If you need additional checkpoints, please let us know.
 
