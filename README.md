@@ -235,6 +235,8 @@ reproduction
 
 #### 2.3.2 Phase 1 (DEAAT)
 
+> Both the `load_checkpoints.sh` and `save_checkpoints.sh` scripts are located in `./Artifacts/src` directory
+
 **First**, load the checkpoints:
 
 ```bash
