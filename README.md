@@ -300,3 +300,6 @@ bash save_checkpoints.sh <exp_name> <dataset_name> <mode> # choose mode from 're
 ```
 
 It is just the reverse process of loading the checkpoints.
+
+## 3 Update in Revision
+
