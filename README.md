@@ -303,3 +303,24 @@ It is just the reverse process of loading the checkpoints.
 
 ## 3 Update in Revision
 
+> We summarized all modifications made to the artifacts in the revision phase in this section.
+
+### 3.1 Dataset expansion for experiments
+
+We have added more datasets to the artifacts (see `./Artifacts/data/`), including three datasets (`adult_balanced_carlini/deepfool/fgsm`) for varying noise injectors in Phase 1 (Fig. 5(c)) and five datasets (`adult_balanced_deepfool_5/10/15/20/25`) for varying noise ratios in Phase 1 (Fig. 5(f)). Besides, a large dataset `covertype` has also been added.
+
+### 3.2 Source code for varying loss optimizers
+
+Based on the reviewers’ feedback, we have tested additional possible loss optimizers. The experimental code can be found in `./Artifacts/src/loss_function_optimizer/` directory. You can run it directly using `python3 vary_optimizer.py` and view the results in the `results/` folder within the same directory.
+
+Please note that AutoGluon’s `TabularPredictor()` does not support all such loss optimizers. Therefore, this script utilizes optimizers implemented in PyTorch to provide an overview of the results and offer insights.
+
+Please see the apendix of the full paper for this part.
+
+### 3.3 Solution for insufficient GPU memory in datamodels
+
+The training of datamodels requires the use of GPUs. Given the varying GPU configurations among users, there may be instances where GPU memory runs out during the training process.
+
+To address this issue, one can sample a small subset from the original dataset, allowing the datamodels to be trained normally on this subset. In this way, we can identify the influential tuples within this subset. For the tuples that were not sampled from the original dataset (i.e., not included in the subset), we check their K-NN within the subset. If the K-NN of an unsampled tuple is identified as an influential tuple in the subset, the unsampled tuple is also considered an influential tuple in the entire dataset. To search for K-NN, one can use a KD-Tree for exact 1-NN or the HNSW algorithm for quick A-NN, depending on the user’s specific needs. Experiments have shown that this method not only solves the insufficient GPU memory issue but also offers strong scalability and good performance, making it an excellent solution.
+
+Considering the case-by-case nature of this issue, we have not included the code for solving the out-of-GPU-memory problem in the artifacts. If necessary, we will release the relevant code in the future.
